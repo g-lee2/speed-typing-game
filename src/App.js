@@ -17,7 +17,7 @@ function App() {
   }
 
   function handleClick() {
-    setRunTimer(prevState => !prevState)
+    setRunTimer(true)
   }
 
   useEffect(() => {
