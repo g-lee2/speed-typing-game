@@ -15,16 +15,14 @@ function App() {
     const wordsArr = text.trim().split(" ")
     return wordsArr.filter(word => word !== "").length
   }
-
-  function handleClick() {
-    setRunTimer(true)
-  }
-
+  
   useEffect(() => {
       if(runTimer && time > 0) {
           setTimeout(() => {
               setTime(times => times - 1)
           }, 1000)
+      } else if (time === 0) {
+        setRunTimer(false)
       }
   }, [runTimer, time])
 
@@ -33,7 +31,7 @@ function App() {
       <h1 className='title'>Speed Typing Game</h1>
       <textarea value={typedWords} onChange={handleChange}/>
       <h1>Time Remaining: {time}</h1>
-      <button onClick={handleClick}>Start</button>
+      <button onClick={() => setRunTimer(true)}>Start</button>
       <h1>Word Count: 11</h1>
     </div>
   )
