@@ -2,8 +2,10 @@ import './App.css';
 import React, { useState, useEffect } from 'react';
 
 function App() {
+  const STARTING_TIME = 5;
+
   const [typedWords, setTypedWords] = useState("");
-  const [time, setTime] = useState(10);
+  const [time, setTime] = useState(STARTING_TIME);
   const [runTimer, setRunTimer] = useState(false);
   const [wordCount, setWordCount] = useState(0);
 
@@ -17,15 +19,24 @@ function App() {
     return wordsArr.filter(word => word !== "").length;
   }
 
+  function startGame() {
+    setRunTimer(true);
+    setTime(STARTING_TIME);
+    setTypedWords("");
+  }
+
+  function endGame() {
+    setRunTimer(false);
+    setWordCount(calculateWordCount(typedWords));
+  }
+
   useEffect(() => {
       if(runTimer && time > 0) {
           setTimeout(() => {
               setTime(times => times - 1)
           }, 1000);
       } else if (time === 0) {
-        setRunTimer(false);
-        const totalWordCount = calculateWordCount(typedWords);
-        setWordCount(totalWordCount);
+        endGame();
 
       }
   }, [runTimer, time])
@@ -33,9 +44,9 @@ function App() {
   return (
     <div>
       <h1 className='title'>Speed Typing Game</h1>
-      <textarea value={typedWords} onChange={handleChange}/>
+      <textarea value={typedWords} onChange={handleChange} disabled={!runTimer}/>
       <h1>Time Remaining: {time}</h1>
-      <button onClick={() => setRunTimer(true)}>Start</button>
+      <button onClick={startGame} disabled={runTimer}>Start</button>
       <h1>Word Count: {wordCount}</h1>
     </div>
   )
